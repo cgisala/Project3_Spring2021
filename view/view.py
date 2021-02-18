@@ -1,6 +1,6 @@
 """User interface considerations only. Will pass all database queries to the ViewModel """
 
-from .view_util import header
+from .view_util import header, validate_email
 import email_validation
 
 class View:
@@ -22,7 +22,5 @@ class View:
         if not name:
             return
 
-        email = input(f'Input the email address for {name}: ')
-        good_email = email_validation(email)
-        if good_email:
+        email = validate_email(input(f'Input the email address for {name}: '))
             
