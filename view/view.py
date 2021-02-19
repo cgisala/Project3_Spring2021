@@ -1,7 +1,8 @@
 """User interface considerations only. Will pass all database queries to the ViewModel """
 
+from exceptions.email_error import EmailError
 from .view_util import header, validate_email
-import email_validation
+from model.model import Artist, Artwork
 
 class View:
 
@@ -16,11 +17,27 @@ class View:
             artist = self.get_one_new_artist()
             if not artist:
                 break
-
+    
+    # Gets artist name and email
     def get_one_new_artist(self):
-        name = input('Enter new artist name to insert, or enter to quit: ')
+        name = input('Enter new artist name to insert, or enter to quit: ') # prompts the user to enter the artist name
         if not name:
             return
 
-        email = validate_email(input(f'Input the email address for {name}: '))
+        # validate email address
+        email = validate_email(input(f'Input the email address for {name}: ')) 
+        artist = Artist(name, email)
+        try:
+            self.view_model.insert(artist)
+            return artist
+        except EmailError as e: # prints email error messages
+            print(str(e))
+
+    # To do create get_new_artwork method
+    # To do search artwork by an an artist method
+    # To do display available artwork by an artist
+    # To do add  a new artwork.  ensure the artwork is associated with an artist
+    # Delete an artwork
+    # change the availability status of an artwork, fro example change from available to sold
+
             
